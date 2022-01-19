@@ -195,9 +195,20 @@ function App() {
               height="400px"
               backgroundColor="whiteAlpha.600"
               borderRadius="lg"
-              boxShadow="lg"
+              boxShadow="md"
+              _hover={{
+                boxShadow: "xl",
+                transform: "scale(1.03)",
+                transition: "transform 0.3s ease-in-out",
+              }}
             >
-              <Image src={item.imgUrl} alt={item.type} />
+              <Image
+                src={item.imgUrl}
+                alt={item.type}
+                height="270px"
+                width="100%"
+                objectFit="cover"
+              />
               <p>
                 {item.type}{" "}
                 {item.price.toLocaleString("es-ar", {
