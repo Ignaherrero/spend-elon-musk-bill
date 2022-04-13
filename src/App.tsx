@@ -93,7 +93,6 @@ function App() {
     } else {
       if (troley.length === 0) {
         setTroley([{ ...thing, quantity: 1 }]);
-        debugger;
       } else if (troley.length > 0) {
         let troleyItem = troley.find((item) => item.type === thing.type);
         if (troleyItem) {
@@ -105,7 +104,6 @@ function App() {
       }
     }
   };
-
   const handleDeleteFromTroley = (thing: Thing) => {
     let filtredProductInTroley = troley.filter(
       (item) => item.type === thing.type
@@ -172,7 +170,7 @@ function App() {
                   currency: "ARS",
                 })}
         </Text>
-        <Text fontSize="4xl" color={theme.headerTextcolor}>
+        <Text fontSize="4xl" color={theme.headerTextcolor} textAlign="center">
           {troley
             .reduce(
               (acc, item) =>
@@ -183,7 +181,7 @@ function App() {
           %
         </Text>
       </Flex>
-      <Container position="relative" mt="100px">
+      <Container position="relative" mt="100px" width="100%">
         <Grid
           templateColumns="repeat(4, auto)"
           gap={10}
@@ -196,6 +194,7 @@ function App() {
               backgroundColor="whiteAlpha.600"
               borderRadius="lg"
               boxShadow="md"
+              position="relative"
               _hover={{
                 boxShadow: "xl",
                 transform: "scale(1.03)",
@@ -216,7 +215,13 @@ function App() {
                   currency: "ARS",
                 })}
               </p>
-              <Flex width="100%" justifyContent="center" marginTop={6}>
+              <Flex
+                width="100%"
+                justifyContent="center"
+                marginTop={6}
+                position="absolute"
+                bottom={3}
+              >
                 <ButtonGroup>
                   <Button
                     variant="outline"
@@ -246,17 +251,31 @@ function App() {
           ))}
         </Grid>
 
-        <h2>Recibo</h2>
-        <p></p>
-        <Text textAlign="center" mt={10}>
-          Total gastado:{" "}
-          {troley
-            .reduce((acc, item) => acc + item.price * (item.quantity || 0), 0)
-            .toLocaleString("es-ar", {
-              style: "currency",
-              currency: "ARS",
-            })}
-        </Text>
+        {troley.length > 0 && (
+          <Container mt={12}>
+            <h2>Recibo</h2>
+            {troley.map((item) => (
+              <Box>
+                <Text fontSize="16px">
+                  {item.type} x {item.quantity}............${item.price}
+                </Text>
+              </Box>
+            ))}
+            <p></p>
+            <Text textAlign="center" mt={10}>
+              Total gastado:{" "}
+              {troley
+                .reduce(
+                  (acc, item) => acc + item.price * (item.quantity || 0),
+                  0
+                )
+                .toLocaleString("es-ar", {
+                  style: "currency",
+                  currency: "ARS",
+                })}
+            </Text>
+          </Container>
+        )}
       </Container>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
